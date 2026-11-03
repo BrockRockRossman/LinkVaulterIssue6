@@ -35,6 +35,8 @@ def test_issue_05():
 
 def test_issue_06():
     assert is_nonblank_title("  ") is False
+    assert is_nonblank_title("\n") is False
+    assert is_nonblank_title("\t") is False
 
 
 def test_issue_07():
