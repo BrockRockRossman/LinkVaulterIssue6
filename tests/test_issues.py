@@ -53,12 +53,21 @@ def test_issue_09():
 
 
 def test_issue_10():
+    # Test that is_unique_url correctly identifies URLs as unique or not, ignoring case and considering archived status.
     links = [
         {"url": "https://example.com/docs/", "archived": False},
         {"url": "https://old.example.com", "archived": True},
     ]
+    #   Test that the function is case-insensitive.
     assert is_unique_url("HTTPS://EXAMPLE.COM/docs", links) is False
+    #   Test that the function considers archived links as unique.
     assert is_unique_url("https://old.example.com", links) is True
+    #  Test that www subdomain is treated as equivalent to no subdomain.
+    assert is_unique_url("HTTPS://www.EXAMPLE.COM/docs", links) is False
+    #  Test that a completely new URL is considered unique.
+    assert is_unique_url("https://new.example.com", links) is True
+    #  Test that the function is case-insensitive for archived links as well.
+    assert is_unique_url("HTTPS://OLD.EXAMPLE.COM", links) is True
 
 
 def test_issue_11():

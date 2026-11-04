@@ -1,0 +1,38 @@
+Use Markdown to view formating
+Testing done through Pytest
+Testing can be done in \LinkVaulterSEF26-JesusM by using python -m pytest -v -k test_issue_10
+File created to show Output
+
+Test:
+
+def test_issue_10():
+# Test that is_unique_url correctly identifies URLs as unique or not, ignoring case and considering archived status.
+links = [
+{"url": "https://example.com/docs/", "archived": False},
+{"url": "https://old.example.com", "archived": True},
+]
+#   Test that the function is case-insensitive.
+assert is_unique_url("HTTPS://EXAMPLE.COM/docs", links) is False
+#   Test that the function considers archived links as unique.
+assert is_unique_url("https://old.example.com", links) is True
+#  Test that www subdomain is treated as equivalent to no subdomain.
+assert is_unique_url("HTTPS://www.EXAMPLE.COM/docs", links) is False
+#  Test that a completely new URL is considered unique.
+assert is_unique_url("https://new.example.com", links) is True
+#  Test that the function is case-insensitive for archived links as well.
+assert is_unique_url("HTTPS://OLD.EXAMPLE.COM", links) is True
+
+Results:
+
+(.venv) C:\Users\lifes\OneDrive\Desktop\Assignment 5\LinkVaulterSEF26-JesusM>python -m pytest -v -k test_issue_10
+================================================= test session starts =================================================
+platform win32 -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\lifes\OneDrive\Desktop\Assignment 5\LinkVaulterSEF26-JesusM\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\lifes\OneDrive\Desktop\Assignment 5\LinkVaulterSEF26-JesusM
+configfile: pyproject.toml
+testpaths: tests
+collected 33 items / 32 deselected / 1 selected
+
+tests/test_issues.py::test_issue_10 PASSED                                                                       [100%]
+
+========================================== 1 passed, 32 deselected in 0.20s ===========================================
