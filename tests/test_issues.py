@@ -72,7 +72,17 @@ def test_issue_11():
 
 def test_issue_12():
     links = [{"title": "Python Guide", "url": "https://example.com"}, {"title": "Other", "url": "https://PYTHON.org"}]
-    assert search_text(links, "python") == links
+    assert search_text(links, "python") == links # Test to ensure that the lowercase title works
+    assert search_text(links, "PYTHON") == links # Test to ensure that the uppercase title works
+
+    # Test to ensure that a query that fits both is not returned twice
+    links = [{"title": "Python Guide", "url": "https://example.com"}, {"title": "Other", "url": "https://PYTHON.org"}, {"title": "Python", "url": "https://PYTHON.org"}]
+    assert search_text(links, "") == links
+
+    # Test to ensure that an empty string returns everything
+    links = [{"title": "Python Guide", "url": "https://example.com"}, {"title": "Other", "url": "https://PYTHON.org"}, {"title": "Other", "url": "https://other.org"}]
+    assert search_text(links, "") == links
+
 
 
 def test_issue_13():
