@@ -71,13 +71,21 @@ def test_issue_10_new_url():
 def test_issue_10_archived_case_insensitive():
     links = [{"url": "https://old.example.com", "archived": True}]
     assert is_unique_url("HTTPS://OLD.EXAMPLE.COM", links) is True
-    
+
 def test_issue_10_different_paths():
     links = [{"url": "https://example.com/docs", "archived": False}]   
     assert is_unique_url("https://example.com/about", links) is True
 
 def test_issue_10_trailing_slash():
     links = [{"url": "https://example.com/docs/", "archived": False}]
+    assert is_unique_url("https://example.com/docs", links) is False
+
+def test_issue_10_path_case_sensitive():
+    links = [{"url": "https://example.com/Docs", "archived": False}]
+    assert is_unique_url("https://example.com/docs", links) is True
+
+def test_issue_10_exact_duplicate():
+    links = [{"url": "https://example.com/docs", "archived": False}]
     assert is_unique_url("https://example.com/docs", links) is False
 
 
