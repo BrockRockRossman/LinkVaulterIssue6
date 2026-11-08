@@ -71,8 +71,10 @@ def test_issue_11():
 
 
 def test_issue_12():
+    #Tests generic all upper/lowercase
     links = [{"title": "Python Guide", "url": "https://example.com"}, {"title": "Other", "url": "https://PYTHON.org"}]
     assert search_text(links, "python") == links # Test to ensure that the lowercase title works
+
     assert search_text(links, "PYTHON") == links # Test to ensure that the uppercase title works
 
     # Test to ensure that a query that fits both is not returned twice
