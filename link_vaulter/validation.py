@@ -36,24 +36,22 @@ def is_unique_url(candidate: str, links: list[dict]) -> bool:
     for item in links:
         if item.get("archived"):
             continue
-        #   set the variable url to the value of the "url" key in the current item dictionary.
-        url =item["url"]
-        hostname = url.split("//")[-1].split("/")[0]
-        #   this makes the domain name into lowercase
+        url = item["url"]
+        hostname = url.split("://",1)[1].split("/")[0]
         hostname = hostname.lower()
-        #   checks if the doamin name starts with www. and then removes it if so, only keeping everything including and after the 4th index
-        if hostname.startswith("www."):
-            hostname = hostname[4:]
-        #completes the first loop by adding the hostname to the hostnames set
+        path = url.split("://", 1)[1].partition("/")[2].rstrip("/")
+        hostname = hostname + "/" + path
         hostnames.add(hostname)
-    #   this splits the candidate URL into seprate parts, first one splits anything before and after the // while the secomd 
-    #   splits the raining ones based on single /, finally, it returns the first index which is just the domain name    
-    candidate_hostname = candidate.split("//")[-1].split("/")[0]
+    #   this splits the candidate URL into seprate parts, first one splits anything before and after the :// while the second 
+    #   splits the remaining into three parts
+    candidate_hostname = candidate.split("://",1)[1].split("/")[0]
     candidate_hostname = candidate_hostname.lower()
-    if candidate_hostname.startswith("www."):
-        candidate_hostname = candidate_hostname[4:]
-    #   this line checks if the candidate_hostname is not equal to any of the hostnames in the hostnames set. 
-    #   it iterate through each hostname in the hostnames set and compares it with the candidate_hostname. If all hostnames are different from the candidate_hostname, it returns True
-    #   If any hostname matches the candidate_hostname, it returns False, indicating that the candidate URL is not unique.
-    return all(hostname != candidate_hostname for hostname in hostnames)
+
+    #   this line extracts the path from the candidate URL by splitting it at the first occurrence of "://",
+    #   taking the part after it, and then partitioning it at the first occurrence of "/".
+    path = candidate.split("://", 1)[1].partition("/")[2].rstrip("/")
+    candidate_hostname = candidate_hostname + "/" + path
+    
+    #   returns false if combined URL is in the set
+    return candidate_hostname not in hostnames
 

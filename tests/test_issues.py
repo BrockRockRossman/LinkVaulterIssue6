@@ -52,22 +52,33 @@ def test_issue_09():
     assert validate_import_row({}) == ["missing title", "missing url"]
 
 
-def test_issue_10():
-    # Test that is_unique_url correctly identifies URLs as unique or not, ignoring case and considering archived status.
-    links = [
-        {"url": "https://example.com/docs/", "archived": False},
-        {"url": "https://old.example.com", "archived": True},
-    ]
-    #   Test that the function is case-insensitive.
+def test_issue_10_case_insensitive():
+    links = [{"url": "https://example.com/docs/", "archived": False}]
     assert is_unique_url("HTTPS://EXAMPLE.COM/docs", links) is False
-    #   Test that the function considers archived links as unique.
+
+def test_issue_10_archived_links():
+    links = [{"url": "https://old.example.com", "archived": True}]
     assert is_unique_url("https://old.example.com", links) is True
-    #  Test that www subdomain is treated as equivalent to no subdomain.
-    assert is_unique_url("HTTPS://www.EXAMPLE.COM/docs", links) is False
-    #  Test that a completely new URL is considered unique.
+
+def test_issue_10_www_subdomain():
+    links = [{"url": "https://example.com/docs", "archived": False}]
+    assert is_unique_url("https://www.example.com/docs", links) is True
+
+def test_issue_10_new_url():
+    links = [{"url": "https://example.com/docs", "archived": False}]
     assert is_unique_url("https://new.example.com", links) is True
-    #  Test that the function is case-insensitive for archived links as well.
+
+def test_issue_10_archived_case_insensitive():
+    links = [{"url": "https://old.example.com", "archived": True}]
     assert is_unique_url("HTTPS://OLD.EXAMPLE.COM", links) is True
+    
+def test_issue_10_different_paths():
+    links = [{"url": "https://example.com/docs", "archived": False}]   
+    assert is_unique_url("https://example.com/about", links) is True
+
+def test_issue_10_trailing_slash():
+    links = [{"url": "https://example.com/docs/", "archived": False}]
+    assert is_unique_url("https://example.com/docs", links) is False
 
 
 def test_issue_11():
