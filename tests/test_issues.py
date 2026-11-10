@@ -52,13 +52,41 @@ def test_issue_09():
     assert validate_import_row({}) == ["missing title", "missing url"]
 
 
-def test_issue_10():
-    links = [
-        {"url": "https://example.com/docs/", "archived": False},
-        {"url": "https://old.example.com", "archived": True},
-    ]
+def test_issue_10_case_insensitive():
+    links = [{"url": "https://example.com/docs/", "archived": False}]
     assert is_unique_url("HTTPS://EXAMPLE.COM/docs", links) is False
+
+def test_issue_10_archived_links():
+    links = [{"url": "https://old.example.com", "archived": True}]
     assert is_unique_url("https://old.example.com", links) is True
+
+def test_issue_10_www_subdomain():
+    links = [{"url": "https://example.com/docs", "archived": False}]
+    assert is_unique_url("https://www.example.com/docs", links) is True
+
+def test_issue_10_new_url():
+    links = [{"url": "https://example.com/docs", "archived": False}]
+    assert is_unique_url("https://new.example.com", links) is True
+
+def test_issue_10_archived_case_insensitive():
+    links = [{"url": "https://old.example.com", "archived": True}]
+    assert is_unique_url("HTTPS://OLD.EXAMPLE.COM", links) is True
+
+def test_issue_10_different_paths():
+    links = [{"url": "https://example.com/docs", "archived": False}]   
+    assert is_unique_url("https://example.com/about", links) is True
+
+def test_issue_10_trailing_slash():
+    links = [{"url": "https://example.com/docs/", "archived": False}]
+    assert is_unique_url("https://example.com/docs", links) is False
+
+def test_issue_10_path_case_sensitive():
+    links = [{"url": "https://example.com/Docs", "archived": False}]
+    assert is_unique_url("https://example.com/docs", links) is True
+
+def test_issue_10_exact_duplicate():
+    links = [{"url": "https://example.com/docs", "archived": False}]
+    assert is_unique_url("https://example.com/docs", links) is False
 
 
 def test_issue_11():
