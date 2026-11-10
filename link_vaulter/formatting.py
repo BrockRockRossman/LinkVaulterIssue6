@@ -29,5 +29,32 @@ def relative_age(iso_timestamp: str, now: datetime | None = None) -> str:
     now = now or datetime.now(timezone.utc)
     then = datetime.fromisoformat(iso_timestamp)
     seconds = int((now - then).total_seconds())
-    return f"{seconds // 60} minutes ago"
+
+    minute = 60
+    hour = 60 * minute
+    day = 24 * hour
+
+    # under min old
+    if seconds < minute:
+        return "just now"
+
+    # under an hour: show min
+    if seconds < 3600:
+        minutes = seconds // 60
+        if minutes == 1:
+            return "1 minute ago"
+        return f"{minutes} minutes ago"
+
+    # under a day: show hrs
+    if seconds < 86400:
+        hours = seconds // 3600
+        if hours == 1:
+            return "1 hour ago"
+        return f"{hours} hours ago"
+
+    # otherwise: show days
+    days = seconds // 86400
+    if days == 1:
+        return "1 day ago"
+    return f"{days} days ago"
 
