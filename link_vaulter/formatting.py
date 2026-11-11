@@ -25,9 +25,46 @@ def truncate_title(title: str, limit: int = 40) -> str:
 
 
 def relative_age(iso_timestamp: str, now: datetime | None = None) -> str:
-    """Issue 20: report minutes/hours/days and handle future timestamps safely."""
+    """Issue 20: report minutes/hours/days and handle future timestamps safely.
+
+    Args:
+        iso_timestamp: Timezone-aware ISO timestamp.
+        now: Time to compare against. Defaults to the current UTC time.
+
+    Returns:
+        "just now" if under a min. old, or in the future, otherwise the largest
+        whole unit (min->hours->days)
+    """
+    # Seconds in each unit, fixed magic #'s
+    SECONDS_PER_MIN = 60
+    SECONDS_PER_HOUR = 60 * SECONDS_PER_MIN
+    SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR
+
     now = now or datetime.now(timezone.utc)
     then = datetime.fromisoformat(iso_timestamp)
     seconds = int((now - then).total_seconds())
-    return f"{seconds // 60} minutes ago"
+
+    # under min old
+    if seconds < SECONDS_PER_MIN:
+        return "just now"
+
+    # under an hour: show min
+    if seconds < SECONDS_PER_HOUR:
+        minutes = seconds // SECONDS_PER_MIN
+        if minutes == 1:
+            return "1 minute ago"
+        return f"{minutes} minutes ago"
+
+    # under a day: show hrs
+    if seconds < SECONDS_PER_DAY:
+        hours = seconds // SECONDS_PER_HOUR
+        if hours == 1:
+            return "1 hour ago"
+        return f"{hours} hours ago"
+
+    # otherwise: show days
+    days = seconds // SECONDS_PER_DAY
+    if days == 1:
+        return "1 day ago"
+    return f"{days} days ago"
 
