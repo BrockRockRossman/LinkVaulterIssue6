@@ -34,9 +34,16 @@ def test_issue_05():
 
 
 def test_issue_06():
-    assert is_nonblank_title("  ") is False
-    assert is_nonblank_title("\n") is False
-    assert is_nonblank_title("\t") is False
+
+    assert is_nonblank_title("  ") is False # Tests a blank title
+
+    assert is_nonblank_title("\n") is False # Tests a title with a newline
+
+    assert is_nonblank_title("\t") is False # Tests a title with a tab
+
+    assert is_nonblank_title("asdf") is True # Tests a title with text
+
+    assert is_nonblank_title("  asdf  ") is True # Tests a title with text and blank space
 
 
 def test_issue_07():
@@ -84,6 +91,7 @@ def test_issue_12():
     # Test to ensure that an empty string returns everything
     links = [{"title": "Python Guide", "url": "https://example.com"}, {"title": "Other", "url": "https://PYTHON.org"}, {"title": "Other", "url": "https://other.org"}]
     assert search_text(links, "") == links
+
 
 
 
