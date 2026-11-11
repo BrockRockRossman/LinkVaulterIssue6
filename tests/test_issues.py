@@ -19,22 +19,28 @@ def test_issue_02():
 
 
 def test_issue_03():
-    # test from the original assignment
+    # original assignment test
     assert normalize_tags([" Python ", "", "PYTHON", "Review"]) == ["python", "review"]
 
-    # extra spaces and uppercase letters are removed
+
+def test_issue_03_whitespace_and_case():
     assert normalize_tags(["  HELLO  ", " World "]) == ["hello", "world"]
 
-    # duplicates are removed
+
+def test_issue_03_duplicates():
     assert normalize_tags(["Python", "python", "PYTHON"]) == ["python"]
 
-    # blank tags are ignored
+
+def test_issue_03_blank_tags():
     assert normalize_tags(["", "  ", "Music"]) == ["music"]
 
-    # make sure the original order is kept
-    assert normalize_tags(["Music", "Coding", "music", "School"]) == ["music", "coding", "school"]
 
-    # an empty list should return an empty list
+def test_issue_03_preserves_order():
+    assert normalize_tags(["Music", "Coding", "music", "School"]) == [
+        "music", "coding", "school"
+    ]
+
+def test_issue_03_empty_list():
     assert normalize_tags([]) == []
 
 
