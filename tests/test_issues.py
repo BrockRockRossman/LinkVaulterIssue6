@@ -19,7 +19,29 @@ def test_issue_02():
 
 
 def test_issue_03():
+    # original assignment test
     assert normalize_tags([" Python ", "", "PYTHON", "Review"]) == ["python", "review"]
+
+
+def test_issue_03_whitespace_and_case():
+    assert normalize_tags(["  HELLO  ", " World "]) == ["hello", "world"]
+
+
+def test_issue_03_duplicates():
+    assert normalize_tags(["Python", "python", "PYTHON"]) == ["python"]
+
+
+def test_issue_03_blank_tags():
+    assert normalize_tags(["", "  ", "Music"]) == ["music"]
+
+
+def test_issue_03_preserves_order():
+    assert normalize_tags(["Music", "Coding", "music", "School"]) == [
+        "music", "coding", "school"
+    ]
+
+def test_issue_03_empty_list():
+    assert normalize_tags([]) == []
 
 
 def test_issue_04():
