@@ -7,7 +7,9 @@ def is_nonblank_title(title: str) -> bool:
     """Issue 06: accept a title only when trimmed content remains"""
     testTitle = title.strip() # Removes any whitespace
     # print(testTitle)
+
     approvedTitle = testTitle.isalnum() # Checks if the string contains alphanumeric characters
+
     return approvedTitle # Returns the result of the check
 
 

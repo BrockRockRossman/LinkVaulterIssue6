@@ -46,6 +46,7 @@ def test_issue_06():
     assert is_nonblank_title("  asdf  ") is True # Tests a title with text and blank space
 
 
+
 def test_issue_07():
     assert is_safe_url("https://example.com") is True
     assert is_safe_url("httpscript:alert(1)") is False
